@@ -14,16 +14,23 @@
     </header>
     <main>
         <div id="container">
-            <h2>Adicionar Gastos</h2>
+            <h2>GASTOS</h2>
+            <hr>
             <form action="">
                 <div class="form-line">
-                    <label for=""></label>Descrição: <input type="text" name="desc" id="desc">
+                    <div class="form-column"><label for="">Descrição</label></div>
+                    <div class="form-column"><textarea name="desc" id="desc" placeholder="Digite aqui"></textarea></div>
                 </div>
                 <div class="form-line">
-                    <label for=""></label>Valor: <input type="number" name="preco" id="preco" step="0.01" min="0">
+                    <div class="form-column"><label for="">Valor:</label></div>
+                    <div class="form-column"><input type="number" name="preco" id="preco" step="0.01" min="0"></div>
                 </div>
                 <div class="form-line">
-                    <label for=""></label>Categoria: <input type="text" name="tipo" id="tipo">
+                    <div class="form-column"><label for="">Categoria:</label></div>
+                    <div class="form-column"><input type="text" name="tipo" id="tipo"></div>
+                </div>
+                <div class="form-line">
+                    <input type="button" value="Salvar">
                 </div>
             </form>
         </div>

@@ -5,6 +5,7 @@
 
 body{
     background-color: rgb(75, 75, 75);
+    font-size: larger;
 }
 
 #header, #container, #footer{
@@ -42,9 +43,28 @@ form{
 
 .form-line{
     margin: 10px;
-    width: 50px;
+    width: 10vh;
+    justify-items: center;
+}
+
+.form-column{
+    margin: 3px;
 }
 
 #desc{
-    height: 7vh;
+    height: 15vh;
+    width: 22vh;
+    resize: none;
+    font-size: small;
+    overflow: auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+input[type=button]{
+    margin-top: 5vh;
+    font-size: medium;
+    padding: 5px 15px;
+    border-radius: 9px;
+    background-color: rgb(9, 255, 0);
+    font-weight: bold;
 }
