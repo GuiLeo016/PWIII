@@ -23,16 +23,66 @@
                 </div>
                 <div class="form-line">
                     <div class="form-column"><label for="">Valor:</label></div>
-                    <div class="form-column"><input type="number" name="preco" id="preco" step="0.01" min="0"></div>
+                    <div class="form-column"><input type="number" name="valor" id="valor" step="0.01" min="0"></div>
                 </div>
                 <div class="form-line">
                     <div class="form-column"><label for="">Categoria:</label></div>
-                    <div class="form-column"><input type="text" name="tipo" id="tipo"></div>
+                    <div class="form-column"><input type="text" name="categoria" id="categoria"></div>
                 </div>
                 <div class="form-line">
-                    <input type="button" value="Salvar">
+                    <input type="button" value="Salvar" onclick="salvar()" id="btnSalvar">
+                </div>
+                <div class="form-line" id="linhaLimpar">
+                    <input type="button" value="Limpar Registros" onclick="limparDados()" id="btnLimparDados">
                 </div>
             </form>
+        </div>
+
+        <script>
+            function salvar(){
+                const desc = document.getElementById("desc").value;
+                const valor = document.getElementById("valor").value;
+                const categoria = document.getElementById("categoria").value;
+
+                const gasto = {
+                    descricao: desc,
+                    valor: valor,
+                    categoria: categoria
+                };
+
+                let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
+
+                gastos.push(gasto);
+
+                localStorage.setItem("gastos", JSON.stringify(gastos));
+
+                mostrarGastos();
+            }
+
+            function mostrarGastos(){
+                const lista = document.getElementById("lista");
+                lista.innerHTML = "";
+
+                let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
+
+                gastos.forEach(function(gasto){
+                    let li = document.createElement("li");
+
+                    li.textContent = 
+                        gasto.descricao + " | R$" + gasto.valor + " | " + gasto.categoria;
+
+                    lista.appendChild(li);
+                });
+            }
+
+            function limparDados(){
+                localStorage.removeItem("gastos");
+                mostrarGastos();
+            }
+        </script>
+
+        <div id="result">
+            <ul id="lista"></ul>
         </div>
     </main>
     <footer>
