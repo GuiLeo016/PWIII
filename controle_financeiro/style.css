@@ -11,7 +11,6 @@ body{
 
 #header, #container, #result, #footer{
     background-color: rgba(0, 0, 0, 0.486);
-    width: auto;
     margin: 2vh 5vh 2vh 5vh;
     border-radius: 15px;
     box-shadow: 0px 0px 20px rgb(255, 255, 255), 0px 0px 40px rgb(255, 255, 255), 0px 0px 60px rgb(255, 255, 255);
@@ -21,22 +20,29 @@ body{
     padding: 2vh;
 }
 
-#header{
-    height: auto;
-}
-
-#container{
-    align-content: normal;
-    width: 50vh;
+#header, #footer{
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 3vh;
 }
 
 #footer{
-    height: auto;
     font-size: medium;
 }
 
+#container{
+    width: 50vh;
+    min-height: 300px;
+}
+
+#result {
+    overflow-y: auto;
+    width: 50vh;
+    max-height: 60vh;
+}
+
 h2{
-    margin-bottom: 2vh;
+    margin-bottom: 1vh;
 }
 
 form{
@@ -71,20 +77,65 @@ input[type=button]{
     width: 10vh;
     font-size: medium;
     padding: 5px 15px;
-    border-radius: 9px;
-    background-color: rgb(9, 255, 0);
-    font-weight: bold;
+    width: auto;
 }
 
 #btnSalvar{
-    margin-top: 5vh;
+    margin-top: 4vh;
+    background-color: rgb(9, 255, 0);
+}
+
+#btnLimparDados{
+    background-color: red;
+}
+
+.gasto-item button {
+    font-size: medium;
+    width: auto;
+    margin-top: 5px;
+    background-color: red;
+    padding: 5px 15px;
+}
+
+button, input[type=button] {
+    border: none;
+    font-weight: bold;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+button:hover, input[type=button]:hover {
+    transform: scale(120%);
+    box-shadow: 0 0 10px white;
+    transition: .5s;
 }
 
 #linhaLimpar{
     width: 100%;
 }
 
-#btnLimparDados{
-    background-color: red;
-    width: auto;
+.gasto-item {
+    background-color: #1e1e1e;
+    color: white;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 1px 1px 1.5vh white;
+}
+
+#lista{
+    height: 47vh;
+}
+
+.total {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#main-content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5vh;
+    flex-wrap: wrap;
 }

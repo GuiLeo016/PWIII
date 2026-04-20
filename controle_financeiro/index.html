@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Controle Financeiro</title>
 </head>
+
 <body>
     <header>
         <div id="header">
@@ -13,76 +15,37 @@
         </div>
     </header>
     <main>
-        <div id="container">
-            <h2>GASTOS</h2>
-            <hr>
-            <form action="">
-                <div class="form-line">
-                    <div class="form-column"><label for="">Descrição</label></div>
-                    <div class="form-column"><textarea name="desc" id="desc" placeholder="Digite aqui"></textarea></div>
-                </div>
-                <div class="form-line">
-                    <div class="form-column"><label for="">Valor:</label></div>
-                    <div class="form-column"><input type="number" name="valor" id="valor" step="0.01" min="0"></div>
-                </div>
-                <div class="form-line">
-                    <div class="form-column"><label for="">Categoria:</label></div>
-                    <div class="form-column"><input type="text" name="categoria" id="categoria"></div>
-                </div>
-                <div class="form-line">
-                    <input type="button" value="Salvar" onclick="salvar()" id="btnSalvar">
-                </div>
-                <div class="form-line" id="linhaLimpar">
-                    <input type="button" value="Limpar Registros" onclick="limparDados()" id="btnLimparDados">
-                </div>
-            </form>
-        </div>
+        <div id="main-content">
+            <div id="container">
+                <h2>GASTOS</h2>
+                <hr>
+                <form action="">
+                    <div class="form-line">
+                        <div class="form-column"><label for="">Descrição</label></div>
+                        <div class="form-column"><textarea name="desc" id="desc" placeholder="Digite aqui"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-line">
+                        <div class="form-column"><label for="">Valor:</label></div>
+                        <div class="form-column"><input type="number" name="valor" id="valor" step="0.01" min="0"></div>
+                    </div>
+                    <div class="form-line">
+                        <div class="form-column"><label for="">Categoria:</label></div>
+                        <div class="form-column"><input type="text" name="categoria" id="categoria"></div>
+                    </div>
+                    <div class="form-line">
+                        <input type="button" value="Salvar" onclick="salvar()" id="btnSalvar">
+                    </div>
+                    <div class="form-line" id="linhaLimpar">
+                        <input type="button" value="Limpar Registros" onclick="limparDados()" id="btnLimparDados">
+                    </div>
+                </form>
+            </div>
 
-        <script>
-            function salvar(){
-                const desc = document.getElementById("desc").value;
-                const valor = document.getElementById("valor").value;
-                const categoria = document.getElementById("categoria").value;
-
-                const gasto = {
-                    descricao: desc,
-                    valor: valor,
-                    categoria: categoria
-                };
-
-                let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
-
-                gastos.push(gasto);
-
-                localStorage.setItem("gastos", JSON.stringify(gastos));
-
-                mostrarGastos();
-            }
-
-            function mostrarGastos(){
-                const lista = document.getElementById("lista");
-                lista.innerHTML = "";
-
-                let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
-
-                gastos.forEach(function(gasto){
-                    let li = document.createElement("li");
-
-                    li.textContent = 
-                        gasto.descricao + " | R$" + gasto.valor + " | " + gasto.categoria;
-
-                    lista.appendChild(li);
-                });
-            }
-
-            function limparDados(){
-                localStorage.removeItem("gastos");
-                mostrarGastos();
-            }
-        </script>
-
-        <div id="result">
-            <ul id="lista"></ul>
+            <div id="result">
+                <div id="total"></div>
+                <div id="lista"></div>
+            </div>
         </div>
     </main>
     <footer>
@@ -90,5 +53,120 @@
             <p>Made by: Guilherme Leonardo dos Santos 3ºDS</p>
         </div>
     </footer>
+    <script>
+        window.onload = mostrarGastos; // Atualiza a lista ao carregar a página com a função mostrarGastos
+
+        // Função para formatar um número para moeda brasileira
+        function formatarMoeda(valor) {
+            return Number(valor).toLocaleString("pt-BR", {
+                style: "currency", // define que será moeda
+                currency: "BRL" // define o tipo de moeda
+            });
+        }
+
+        // Função que busca gastos no localStorage
+        function obterGastos() {
+            //Pega o item "gastos", converte de string para objeto
+            // Se não existir nada, retorna um array vazio
+            return JSON.parse(localStorage.getItem("gastos")) || [];
+        }
+
+        // Função para salvar gastos no localStorage
+        function salvarGastos(gastos) {
+            localStorage.setItem("gastos", JSON.stringify(gastos));
+        }
+
+        // Função chamada ao clicar no botão "Salvar"
+        function salvar() {
+            // Pega o valor digitado no campo "descrição" e remove espaços extras
+            const desc = document.getElementById("desc").value.trim();
+            // Pega o valor digitado no campo "valor"
+            const valor = document.getElementById("valor").value;
+            // Pega o valor digitado no campo "categoria" e remove espaços extras
+            const categoria = document.getElementById("categoria").value.trim();
+
+            // Converte o campo "valor" para número
+            const valorNum = Number(valor);
+
+            //Verificação de campos vazios
+            if (desc === "") {
+                alert("Preencha o campo descrição!");
+            } else if (isNaN(valorNum) || valorNum <= 0) {
+                alert("Digite um valor válido!");
+            } else if (categoria === "") {
+                alert("Preencha o campo categoria!");
+            } else {
+                // Cria um objeto representando um gasto
+                const gasto = {
+                    descricao: desc,
+                    valor: valorNum,
+                    categoria: categoria
+                };
+
+                let gastos = obterGastos(); // Busca os gastos já salvos no localStorage
+                gastos.push(gasto); // Adiciona o novo gasto no array
+                salvarGastos(gastos); // Chama a função para salvar o array atualizado
+
+                mostrarGastos(); // Atualiza a lista exibida na tela
+
+                // Limpar campos
+                document.getElementById("desc").value = "";
+                document.getElementById("valor").value = "";
+                document.getElementById("categoria").value = "";
+
+                alert("Gasto adicionado!");
+            }
+        }
+
+        // Função para exibir os gastos na tela
+        function mostrarGastos() {
+            const lista = document.getElementById("lista"); // Pega a div onde a lista será exibida
+            const totalDiv = document.getElementById("total"); // Pega a div onde o total será exibido
+
+            lista.innerHTML = ""; // Limpa o conteúdo da lista atual
+            totalDiv.innerHTML = ""; // Limpa o conteúdo do total
+
+            let gastos = obterGastos(); // Recupera os gastos do localStorage
+            let total = 0; // Soma do total
+
+            // Percorre cada gasto do array
+            gastos.forEach(function (gasto, index) {
+                let divGasto = document.createElement("div"); // Cria uma nova div para cada gasto
+                divGasto.classList.add("gasto-item") // Adiciona a calsse "gasto-item" para a div criada
+                
+                // Insere conteúdo HTML dentro da div
+                divGasto.innerHTML = `
+                    <p>Descrição: ${gasto.descricao}</p>
+                    <p>Valor: ${formatarMoeda(gasto.valor)}</p>
+                    <p>Categoria: ${gasto.categoria}</p>
+                    <button onclick="removerGasto(${index})">Remover</button>
+                `;
+
+                total += Number(gasto.valor); // Soma o valor do gasto ao total
+
+                lista.appendChild(divGasto); // Adiciona a div do gasto na lista principal
+            });
+
+            // Define o texto da div "totalDiv" como o valor total formatando como moeda
+            totalDiv.textContent = "Total: " + formatarMoeda(total);
+        }
+
+        // Função para remover gasto específico
+        function removerGasto(index) {
+            let gastos = obterGastos();
+            gastos.splice(index, 1);
+            salvarGastos(gastos);
+            mostrarGastos();
+        }
+
+        // Função para remover todos os gastos da lista com confirmação
+        function limparDados() {
+            if (confirm("Tem certeza que deseja apagar todos os gastos?")) {
+                localStorage.removeItem("gastos");
+                mostrarGastos();
+            }
+        }
+    </script>
 </body>
+
 </html>
