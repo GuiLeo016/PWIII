@@ -1,0 +1,57 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: rgb(56, 56, 56);
+    color: #FFF;
+}
+
+#header{
+    background-color: rgb(0, 0, 0);
+    padding: 2.5vh 50vh;
+    border-radius: 0 0 2ch 2ch;
+    box-shadow: 0 0 2ch rgb(255, 255, 255), 0 0 5ch rgba(255, 255, 255, 0.705), 0 0 7ch rgba(255, 255, 255, 0.562);
+    border: #FFF solid 3px;
+    border-top: none;
+    font-size: 2.4vh;
+    font-weight: bold;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+#header ul li a{
+    text-decoration: none;
+    color: white;
+}
+
+#header ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style: none;
+}
+
+#container{
+    /*
+    background-image: url(https://wallpapers.com/images/hd/earth-background-g51tv6pij5i87k1n.jpg);
+    background-size: 80vh;
+    background-position-x: right;
+    background-position-y: bottom;
+    background-repeat: no-repeat;
+    */
+    display: flex;
+    position: relative;
+    background-color: #000;
+    border-radius: 2ch;
+    margin: 5ch;
+    width: auto;
+    height: 70vh;
+    box-shadow: 0 0 2ch rgb(255, 255, 255), 0 0 5ch rgba(255, 255, 255, 0.822), 0 0 10ch rgba(255, 255, 255, 0.562);
+    border: #FFF solid 3px;
+    justify-content: center;
+}
+
+#container::before{
+    content: '';
+}
