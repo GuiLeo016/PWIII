@@ -28,11 +28,11 @@ create table tb_paises(
     clima_pais VARCHAR(20) NOT NULL,
     regime_politico VARCHAR(40) NOT NULL,
     moeda VARCHAR(25) NOT NULL,
-    governante INT NOT NULL,
+    governante_pais INT NOT NULL,
     continente_pais INT NOT NULL,
     
     FOREIGN KEY (governante) REFERENCES tb_governantes (id_governante),
-    FOREIGN KEY (continente_pais) REFERENCES tb_continente (id_continente)
+    FOREIGN KEY (continente_pais) REFERENCES tb_continentes (id_continente)
 );
 
 create table tb_cidades(
@@ -42,7 +42,9 @@ create table tb_cidades(
     area_cidade DECIMAL(12,3) NOT NULL,
     clima_cidade VARCHAR(20) NOT NULL,
     data_fundacao DATE NOT NULL,
+    pais_cidade INT NOT NULL,
     governante_cidade INT NOT NULL,
     
+    FOREIGN KEY (pais_cidade) REFERENCES tb_paises (id_pais),
     FOREIGN KEY (governante_cidade) REFERENCES tb_governantes (id_governante)
 );

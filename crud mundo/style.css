@@ -1,57 +1,139 @@
-*{
-    margin: 0;
-    padding: 0;
-}
+ *{
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box; /* Garante que o padding não quebre o layout */
+ }
 
-body{
-    background-color: rgb(56, 56, 56);
-    color: #FFF;
-}
+ body{
+     background-color: rgb(56, 56, 56);
+     color: #FFF;
+     font-family: Georgia, 'Times New Roman', Times, serif;
+ }
 
-#header{
-    background-color: rgb(0, 0, 0);
-    padding: 2.5vh 50vh;
-    border-radius: 0 0 2ch 2ch;
-    box-shadow: 0 0 2ch rgb(255, 255, 255), 0 0 5ch rgba(255, 255, 255, 0.705), 0 0 7ch rgba(255, 255, 255, 0.562);
-    border: #FFF solid 3px;
-    border-top: none;
-    font-size: 2.4vh;
-    font-weight: bold;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-}
+ #header{
+     background-color: rgb(0, 0, 0);
+     padding: 2.5vh 30vh; /* Ajustado levemente de 50vh para 30vh para melhor responsividade */
+     border-radius: 0 0 2ch 2ch;
+     box-shadow: 0 0 2ch rgb(255, 255, 255), 0 0 5ch rgba(255, 255, 255, 0.705), 0 0 7ch rgba(255, 255, 255, 0.562);
+     border: #FFF solid 3px;
+     border-top: none;
+     font-size: 2.4vh;
+     font-weight: bold;
+ }
 
-#header ul li a{
-    text-decoration: none;
-    color: white;
-}
+ #header ul li a{
+     text-decoration: none;
+     color: white;
+     transition: 0.3s;
+ }
 
-#header ul{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    list-style: none;
-}
+ #header ul li a:hover {
+     text-shadow: 0 0 10px #fff;
+ }
 
-#container{
-    /*
-    background-image: url(https://wallpapers.com/images/hd/earth-background-g51tv6pij5i87k1n.jpg);
-    background-size: 80vh;
-    background-position-x: right;
-    background-position-y: bottom;
-    background-repeat: no-repeat;
-    */
-    display: flex;
-    position: relative;
-    background-color: #000;
-    border-radius: 2ch;
-    margin: 5ch;
-    width: auto;
-    height: 70vh;
-    box-shadow: 0 0 2ch rgb(255, 255, 255), 0 0 5ch rgba(255, 255, 255, 0.822), 0 0 10ch rgba(255, 255, 255, 0.562);
-    border: #FFF solid 3px;
-    justify-content: center;
-}
+ #header ul{
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     list-style: none;
+ }
 
-#container::before{
-    content: '';
+ #container{
+     display: flex;
+     flex-direction: column; /* Alterado para empilhar o título e as listas verticalmente */
+     align-items: center;
+     position: relative;
+     background-color: #000;
+     border-radius: 2ch;
+     margin: 5ch;
+     padding: 4ch;
+     width: auto;
+     height: auto; /* Alterado para auto para comportar o conteúdo sem transbordar */
+     min-height: 70vh;
+     box-shadow: 0 0 2ch rgb(255, 255, 255), 0 0 5ch rgba(255, 255, 255, 0.822), 0 0 10ch rgba(255, 255, 255, 0.562);
+     border: #FFF solid 3px;
+ }
+
+ #container::before{
+     content: '';
+ }
+
+ /* =================== SEU NOVO CSS DA CASCATA =================== */
+ #container h1 {
+     font-size: 4vh;
+     margin-bottom: 1ch;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+ }
+
+ #container p {
+     color: #aaa;
+     margin-bottom: 4ch;
+     font-size: 2vh;
+ }
+
+ /* Container das 3 colunas */
+ .cascata-wrapper {
+     display: flex;
+     flex-direction: row;
+     gap: 4ch;
+     width: 100%;
+     justify-content: center;
+ }
+
+ /* Estilização de cada coluna de listagem */
+ .coluna-lista {
+     flex: 1;
+     max-width: 350px;
+     background-color: rgb(30, 30, 30);
+     border: 2px solid #fff;
+     border-radius: 1.5ch;
+     padding: 3ch;
+     box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+ }
+
+ .coluna-lista h2 {
+     font-size: 2.5vh;
+     margin-bottom: 2ch;
+     border-bottom: 1px solid #fff;
+     padding-bottom: 1ch;
+     text-align: center;
+ }
+
+ .coluna-lista ul {
+     list-style: none;
+     display: flex;
+     flex-direction: column;
+     gap: 1.5ch;
+ }
+
+ /* Itens de link das listas */
+ .coluna-lista ul li a {
+     display: block;
+     color: #fff;
+     text-decoration: none;
+     background-color: rgb(15, 15, 15);
+     padding: 1.5ch 2ch;
+     border: 1px solid rgb(80, 80, 80);
+     border-radius: 1ch;
+     font-size: 2vh;
+     transition: all 0.3s ease;
+ }
+
+ /* Efeito Hover nos itens */
+ .coluna-lista ul li a:hover {
+     background-color: #fff;
+     color: #000;
+     font-weight: bold;
+     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+     transform: scale(1.02);
+ }
+
+ /* Classe para destacar o item selecionado/ativo */
+ .coluna-lista ul li a.ativo {
+     background-color: #fff;
+     color: #000;
+     font-weight: bold;
+     border-color: #fff;
+     box-shadow: 0 0 15px rgb(255, 255, 255);
 }
