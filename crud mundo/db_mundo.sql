@@ -1,7 +1,8 @@
-create database db_mundo;
+drop database if exists db_mundo;
+create database if not exists db_mundo;
 use db_mundo;
 
-create table tb_continentes(
+create table if not exists tb_continentes(
 	id_continente INT PRIMARY KEY AUTO_INCREMENT,
     nome_continente VARCHAR(45) NOT NULL,
     populacao_continente INT NOT NULL,
@@ -9,7 +10,7 @@ create table tb_continentes(
     total_paises INT NOT NULL
 );
 
-create table tb_governantes(
+create table if not exists tb_governantes(
 	id_governante INT PRIMARY KEY AUTO_INCREMENT,
 	nome_governante VARCHAR(80) NOT NULL,
     partido_politico VARCHAR(80) NOT NULL,
@@ -19,7 +20,7 @@ create table tb_governantes(
     data_final_mandato DATE NOT NULL
 );
 
-create table tb_paises(
+create table if not exists tb_paises(
 	id_pais INT PRIMARY KEY AUTO_INCREMENT,
     nome_pais VARCHAR(50) NOT NULL,
     populacao_pais INT NOT NULL,
@@ -31,11 +32,11 @@ create table tb_paises(
     governante_pais INT NOT NULL,
     continente_pais INT NOT NULL,
     
-    FOREIGN KEY (governante) REFERENCES tb_governantes (id_governante),
+    FOREIGN KEY (governante_pais) REFERENCES tb_governantes (id_governante),
     FOREIGN KEY (continente_pais) REFERENCES tb_continentes (id_continente)
 );
 
-create table tb_cidades(
+create table if not exists tb_cidades(
 	id_cidade INT PRIMARY KEY AUTO_INCREMENT,
     nome_cidade VARCHAR(80) NOT NULL,
     populacao_cidade INT NOT NULL,
