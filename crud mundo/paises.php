@@ -49,7 +49,7 @@ $governantes = $pdo->query("SELECT id_governante, nome_governante FROM tb_govern
         </div>
         
         <div id="container" style="height: auto; padding-bottom: 5ch;">
-            <h1>Cadastrar País</h1>
+            <h1>País</h1>
             <?php if($mensagem) echo "<p class='mensagem'>$mensagem</p>"; ?>
             
             <div class="form-container">
@@ -91,7 +91,7 @@ $governantes = $pdo->query("SELECT id_governante, nome_governante FROM tb_govern
                     <label>Moeda:</label>
                     <input type="text" name="moeda" required>
                     
-                    <button type="submit" class="btn-salvar">Salvar País</button>
+                    <button type="submit" class="btn-salvar">Salvar</button>
                 </form>
             </div>
         </div>

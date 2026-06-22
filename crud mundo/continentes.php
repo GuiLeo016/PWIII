@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastrar Continentes - CRUD Mundo</title>
+    <title>Continentes - CRUD Mundo</title>
     <link rel="stylesheet" href="style.css"> </head>
 <body>
     <div id="main">
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         
         <div id="container">
-            <h1>Cadastrar Continente</h1>
+            <h1>Continente</h1>
             <?php if($mensagem) echo "<p class='mensagem'>$mensagem</p>"; ?>
             
             <div class="form-container">
@@ -52,15 +52,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="text" name="nome_continente" required>
                     
                     <label>População:</label>
-                    <input type="number" name="populacao_continente" required>
+                    <input type="number" name="populacao_continente" min=1 required>
                     
                     <label>Área (km²):</label>
-                    <input type="number" step="0.001" name="area_continente" required>
+                    <input type="number" step="0.01" name="area_continente" min=1 required>
                     
                     <label>Total de Países:</label>
-                    <input type="number" name="total_paises" required>
+                    <input type="number" name="total_paises" min="1" required>
                     
-                    <button type="submit" class="btn-salvar">Salvar Continente</button>
+                    <button type="submit" class="btn-salvar">Salvar</button>
                 </form>
             </div>
         </div>

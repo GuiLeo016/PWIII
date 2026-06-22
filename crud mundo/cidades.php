@@ -29,7 +29,7 @@ $governantes = $pdo->query("SELECT id_governante, nome_governante FROM tb_govern
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastrar Cidades - CRUD Mundo</title>
+    <title>Cidades - CRUD Mundo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -45,7 +45,7 @@ $governantes = $pdo->query("SELECT id_governante, nome_governante FROM tb_govern
         </div>
         
         <div id="container" style="height: auto; padding-bottom: 5ch;">
-            <h1>Cadastrar Cidade</h1>
+            <h1>Cidade</h1>
             <?php if($mensagem) echo "<p class='mensagem'>$mensagem</p>"; ?>
             
             <div class="form-container">
@@ -81,7 +81,7 @@ $governantes = $pdo->query("SELECT id_governante, nome_governante FROM tb_govern
                     <label>Data de Fundação:</label>
                     <input type="date" name="data_fundacao" required>
                     
-                    <button type="submit" class="btn-salvar">Salvar Cidade</button>
+                    <button type="submit" class="btn-salvar">Salvar</button>
                 </form>
             </div>
         </div>

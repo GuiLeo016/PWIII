@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastrar Governantes - CRUD Mundo</title>
+    <title>Governantes - CRUD Mundo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label>Final do Mandato:</label>
                     <input type="date" name="data_final_mandato" required>
                     
-                    <button type="submit" class="btn-salvar">Salvar Governante</button>
+                    <button type="submit" class="btn-salvar">Salvar</button>
                 </form>
             </div>
         </div>
