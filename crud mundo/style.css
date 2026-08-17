@@ -201,3 +201,12 @@ body {
     font-weight: bold; 
     color: #4CAF50; 
 }
+
+form{
+    display: flex;
+    justify-content: center;
+}
+
+#btn-logar{
+    width: 50%;
+}
