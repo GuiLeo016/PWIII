@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div id="main">
         <div id="header">
             <ul>
-                <li><a href="index.php">Início</a></li>
+                <li><a href="home.php">Início</a></li>
                 <li><a href="continentes.php">Continentes</a></li>
                 <li><a href="paises.php">Países</a></li>
                 <li><a href="cidades.php">Cidades</a></li>

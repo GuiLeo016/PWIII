@@ -49,3 +49,26 @@ create table if not exists tb_cidades(
     FOREIGN KEY (pais_cidade) REFERENCES tb_paises (id_pais),
     FOREIGN KEY (governante_cidade) REFERENCES tb_governantes (id_governante)
 );
+
+create table if not exists tb_usuario(
+    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    login_usuario VARCHAR(30) NOT NULL,
+    senha_usuario VARCHAR(80) NOT NULL,
+    tipo_usuario CHAR(1) NOT NULL
+);
+
+create table if not exists tb_log (
+    id_log INT PRIMARY KEY AUTO_INCREMENT,
+    usuario_log INT,
+    acao_log VARCHAR(30) NOT NULL,
+    tabela_log VARCHAR(50),
+    id_registro INT,
+    descricao_log VARCHAR(255),
+    data_log DATE NOT NULL,
+    hora_log TIME NOT NULL,
+
+    FOREIGN KEY (usuario_log) REFERENCES tb_usuario(id_usuario)
+);
+
+INSERT INTO tb_usuario (login_usuario, senha_usuario, tipo_usuario)
+VALUES ('admin','1234','A');

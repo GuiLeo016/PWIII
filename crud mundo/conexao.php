@@ -1,14 +1,29 @@
 <?php
-$host = 'localhost';
-$dbname = 'db_mundo';
-$user = 'root';
-$pass = '';
+
+$host = "localhost";
+$dbname = "db_mundo";
+$user = "root";
+$password = "";
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
 
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = new PDO(
+        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+        $user,
+        $password
+    );
+
+    $pdo->setAttribute(
+        PDO::ATTR_ERRMODE,
+        PDO::ERRMODE_EXCEPTION
+    );
+
+    $pdo->setAttribute(
+        PDO::ATTR_DEFAULT_FETCH_MODE,
+        PDO::FETCH_ASSOC
+    );
+
 } catch (PDOException $e) {
-    die("Erro ao conectar com o banco de dados: " . $e->getMessage());
+
+    die("Erro ao conectar ao banco de dados.");
 }
-?>
