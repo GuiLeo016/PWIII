@@ -53,7 +53,7 @@ create table if not exists tb_cidades(
 create table if not exists tb_usuario(
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     login_usuario VARCHAR(30) NOT NULL,
-    senha_usuario VARCHAR(80) NOT NULL,
+    senha_usuario VARCHAR(255) NOT NULL,
     tipo_usuario CHAR(1) NOT NULL
 );
 
@@ -69,6 +69,3 @@ create table if not exists tb_log (
 
     FOREIGN KEY (usuario_log) REFERENCES tb_usuario(id_usuario)
 );
-
-INSERT INTO tb_usuario (login_usuario, senha_usuario, tipo_usuario)
-VALUES ('admin','1234','A');

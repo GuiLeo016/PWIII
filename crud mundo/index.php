@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $usuario = $stmt->fetch();
 
-        if ($usuario && $senha === $usuario["senha_usuario"]) {
+        if ($usuario && password_verify($senha, $usuario["senha_usuario"])) {
 
             session_regenerate_id(true);
 
@@ -226,6 +226,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         </ul>
 
                     </form>
+
+
+                    <p class="link-troca">
+                        Não tem cadastro?
+                        <a href="cadastro.php">
+                            Cadastre-se aqui
+                        </a>
+                    </p>
 
                 </section>
 

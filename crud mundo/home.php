@@ -24,6 +24,9 @@ if (!isset($_SESSION["id_usuario"])) {
 
 $nome_usuario = $_SESSION["login_usuario"];
 $tipo_usuario = $_SESSION["tipo_usuario"];
+$eh_admin = ($tipo_usuario === "A");
+
+$acesso_negado = isset($_GET["acesso"]) && $_GET["acesso"] === "negado";
 
 
 /*
@@ -344,29 +347,33 @@ if ($cidade_id !== null && $pais_id !== null) {
                 </a>
             </li>
 
-            <li>
-                <a href="continentes.php">
-                    Continentes
-                </a>
-            </li>
+            <?php if ($eh_admin): ?>
 
-            <li>
-                <a href="paises.php">
-                    Países
-                </a>
-            </li>
+                <li>
+                    <a href="continentes.php">
+                        Continentes
+                    </a>
+                </li>
 
-            <li>
-                <a href="cidades.php">
-                    Cidades
-                </a>
-            </li>
+                <li>
+                    <a href="paises.php">
+                        Países
+                    </a>
+                </li>
 
-            <li>
-                <a href="gov.php">
-                    Governantes
-                </a>
-            </li>
+                <li>
+                    <a href="cidades.php">
+                        Cidades
+                    </a>
+                </li>
+
+                <li>
+                    <a href="gov.php">
+                        Governantes
+                    </a>
+                </li>
+
+            <?php endif; ?>
 
             <li>
                 <a href="logout.php">
@@ -393,6 +400,15 @@ if ($cidade_id !== null && $pais_id !== null) {
             Selecione um continente, um país e uma cidade
             para consultar suas informações.
         </p>
+
+
+        <?php if ($acesso_negado): ?>
+
+            <div class="mensagem erro">
+                Você não tem permissão para acessar essa página.
+            </div>
+
+        <?php endif; ?>
 
 
         <!-- =================================================

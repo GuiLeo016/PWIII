@@ -1,5 +1,7 @@
 <?php
+require 'verificacao.php';
 include 'conexao.php';
+
 $mensagem = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

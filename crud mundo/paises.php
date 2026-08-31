@@ -1,5 +1,7 @@
 <?php
+require 'verificacao.php';
 include 'conexao.php';
+
 $mensagem = "";
 
 // Lógica de Inserção no Banco

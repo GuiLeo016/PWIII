@@ -1,9 +1,28 @@
 <?php
+require 'verificacao.php';
 include 'conexao.php';
+
 $mensagem = "";
+
+
+/*
+|--------------------------------------------------------------------------
+| CALCULA A IDADE COM BASE NA DATA DE NASCIMENTO
+|--------------------------------------------------------------------------
+*/
+
+function calcularIdade(string $data_nascimento): int
+{
+    $nascimento = new DateTime($data_nascimento);
+    $hoje = new DateTime();
+
+    return $hoje->diff($nascimento)->y;
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
+        $idade = calcularIdade($_POST['data_nascimento']);
+
         $sql = "INSERT INTO tb_governantes (nome_governante, partido_politico, data_nascimento, idade, data_inicio_mandato, data_final_mandato) 
                 VALUES (:nome, :partido, :nasc, :idade, :inicio, :fim)";
         $stmt = $pdo->prepare($sql);
@@ -11,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':nome' => $_POST['nome_governante'],
             ':partido' => $_POST['partido_politico'],
             ':nasc' => $_POST['data_nascimento'],
-            ':idade' => $_POST['idade'],
+            ':idade' => $idade,
             ':inicio' => $_POST['data_inicio_mandato'],
             ':fim' => $_POST['data_final_mandato']
         ]);
@@ -53,10 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="text" name="partido_politico" required>
                     
                     <label>Data de Nascimento:</label>
-                    <input type="date" name="data_nascimento" required>
-                    
-                    <label>Idade:</label>
-                    <input type="number" name="idade" required>
+                    <input type="date" name="data_nascimento" id="data_nascimento" required onchange="atualizarIdadePreview()">
+                    <p id="idade-preview" class="idade-preview"></p>
                     
                     <label>Início do Mandato:</label>
                     <input type="date" name="data_inicio_mandato" required>
@@ -69,5 +86,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
+
+    <script>
+        function atualizarIdadePreview() {
+            const dataNascimento = document.getElementById('data_nascimento').value;
+            const preview = document.getElementById('idade-preview');
+
+            if (!dataNascimento) {
+                preview.textContent = '';
+                return;
+            }
+
+            const nascimento = new Date(dataNascimento + 'T00:00:00');
+            const hoje = new Date();
+
+            let idade = hoje.getFullYear() - nascimento.getFullYear();
+            const aindaNaoFezAniversario =
+                hoje.getMonth() < nascimento.getMonth() ||
+                (hoje.getMonth() === nascimento.getMonth() && hoje.getDate() < nascimento.getDate());
+
+            if (aindaNaoFezAniversario) {
+                idade--;
+            }
+
+            preview.textContent = idade >= 0 ? `Idade calculada: ${idade} anos` : '';
+        }
+    </script>
 </body>
 </html>
