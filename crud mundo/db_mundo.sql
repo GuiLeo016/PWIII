@@ -54,7 +54,10 @@ create table if not exists tb_usuario(
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     login_usuario VARCHAR(30) NOT NULL,
     senha_usuario VARCHAR(255) NOT NULL,
-    tipo_usuario CHAR(1) NOT NULL
+    tipo_usuario CHAR(1) NOT NULL,
+    senha_temporaria TINYINT(1) NOT NULL DEFAULT 1,
+    tentativas_login INT NOT NULL DEFAULT 0,
+    bloqueado_ate DATETIME NULL DEFAULT NULL
 );
 
 create table if not exists tb_log (

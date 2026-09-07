@@ -50,8 +50,8 @@ try {
         $senhaHash = password_hash("1234", PASSWORD_DEFAULT);
 
         $stmtAdmin = $pdo->prepare(
-            "INSERT INTO tb_usuario (login_usuario, senha_usuario, tipo_usuario)
-             VALUES (:login, :senha, :tipo)"
+            "INSERT INTO tb_usuario (login_usuario, senha_usuario, tipo_usuario, senha_temporaria)
+             VALUES (:login, :senha, :tipo, 1)"
         );
 
         $stmtAdmin->execute([

@@ -1,20 +1,7 @@
 <?php
 
-session_start();
-
 require_once 'conexao.php';
-
-/*
-|--------------------------------------------------------------------------
-| VERIFICAÇÃO DE LOGIN
-|--------------------------------------------------------------------------
-*/
-
-if (!isset($_SESSION["id_usuario"])) {
-    header("Location: index.php");
-    exit;
-}
-
+require 'sessao.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -373,7 +360,19 @@ if ($cidade_id !== null && $pais_id !== null) {
                     </a>
                 </li>
 
+                <li>
+                    <a href="cadastro.php">
+                        Cadastrar Usuário
+                    </a>
+                </li>
+
             <?php endif; ?>
+
+            <li>
+                <a href="trocar_senha.php">
+                    Alterar Senha
+                </a>
+            </li>
 
             <li>
                 <a href="logout.php">

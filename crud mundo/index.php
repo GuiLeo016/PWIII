@@ -10,6 +10,16 @@ $tipo_mensagem = "";
 
 /*
 |--------------------------------------------------------------------------
+| CONFIGURAÇÕES DO BLOQUEIO POR TENTATIVAS
+|--------------------------------------------------------------------------
+*/
+
+const TENTATIVAS_MAXIMAS = 3;
+const MINUTOS_BLOQUEIO = 5;
+
+
+/*
+|--------------------------------------------------------------------------
 | PROCESSAMENTO DO LOGIN
 |--------------------------------------------------------------------------
 */
@@ -30,7 +40,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     id_usuario,
                     login_usuario,
                     senha_usuario,
-                    tipo_usuario
+                    tipo_usuario,
+                    senha_temporaria,
+                    tentativas_login,
+                    bloqueado_ate
                 FROM tb_usuario
                 WHERE login_usuario = :login
                 LIMIT 1";
@@ -43,74 +56,144 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $usuario = $stmt->fetch();
 
-        if ($usuario && password_verify($senha, $usuario["senha_usuario"])) {
+        $estaBloqueado = $usuario
+            && $usuario["bloqueado_ate"] !== null
+            && strtotime($usuario["bloqueado_ate"]) > time();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CONTA TEMPORARIAMENTE BLOQUEADA
+        |--------------------------------------------------------------------------
+        */
+
+        if ($estaBloqueado) {
+
+            $minutosRestantes = (int) ceil((strtotime($usuario["bloqueado_ate"]) - time()) / 60);
+
+            $mensagem = "Conta bloqueada temporariamente após várias tentativas incorretas. "
+                      . "Tente novamente em aproximadamente {$minutosRestantes} minuto(s).";
+            $tipo_mensagem = "erro";
+
+            $sqlLog = "INSERT INTO tb_log (
+                            usuario_log, acao_log, descricao_log, data_log, hora_log
+                       ) VALUES (
+                            :usuario, 'LOGIN_BLOQUEADO', 'Tentativa de login em conta bloqueada', CURDATE(), CURTIME()
+                       )";
+            $stmtLog = $pdo->prepare($sqlLog);
+            $stmtLog->execute([":usuario" => $usuario["id_usuario"]]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | LOGIN CORRETO
+        |--------------------------------------------------------------------------
+        */
+
+        } elseif ($usuario && password_verify($senha, $usuario["senha_usuario"])) {
+
+            // Login certo: zera tentativas e qualquer bloqueio pendente
+            $stmtReset = $pdo->prepare(
+                "UPDATE tb_usuario SET tentativas_login = 0, bloqueado_ate = NULL WHERE id_usuario = :id"
+            );
+            $stmtReset->execute([":id" => $usuario["id_usuario"]]);
 
             session_regenerate_id(true);
 
             $_SESSION["id_usuario"] = $usuario["id_usuario"];
             $_SESSION["login_usuario"] = $usuario["login_usuario"];
             $_SESSION["tipo_usuario"] = $usuario["tipo_usuario"];
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | REGISTRA LOGIN
-            |--------------------------------------------------------------------------
-            */
+            $_SESSION["senha_temporaria"] = (int) $usuario["senha_temporaria"];
 
             $sqlLog = "INSERT INTO tb_log (
-                            usuario_log,
-                            acao_log,
-                            descricao_log,
-                            data_log,
-                            hora_log
-                       )
-                       VALUES (
-                            :usuario,
-                            'LOGIN',
-                            'Usuário realizou login no sistema',
-                            CURDATE(),
-                            CURTIME()
+                            usuario_log, acao_log, descricao_log, data_log, hora_log
+                       ) VALUES (
+                            :usuario, 'LOGIN', 'Usuário realizou login no sistema', CURDATE(), CURTIME()
                        )";
-
             $stmtLog = $pdo->prepare($sqlLog);
+            $stmtLog->execute([":usuario" => $usuario["id_usuario"]]);
 
-            $stmtLog->execute([
-                ":usuario" => $usuario["id_usuario"]
-            ]);
-
-
-            header("Location: home.php");
+            if ($_SESSION["senha_temporaria"] === 1) {
+                header("Location: trocar_senha.php");
+            } else {
+                header("Location: home.php");
+            }
             exit;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | LOGIN INCORRETO
+        |--------------------------------------------------------------------------
+        */
 
         } else {
 
-            /*
-            |--------------------------------------------------------------------------
-            | REGISTRA LOGIN INVÁLIDO
-            |--------------------------------------------------------------------------
-            */
+            if ($usuario) {
 
-            $sqlLog = "INSERT INTO tb_log (
-                            usuario_log,
-                            acao_log,
-                            descricao_log,
-                            data_log,
-                            hora_log
-                       )
-                       VALUES (
-                            NULL,
-                            'LOGIN_FALHA',
-                            'Tentativa de login com credenciais inválidas',
-                            CURDATE(),
-                            CURTIME()
-                       )";
+                $novasTentativas = $usuario["tentativas_login"] + 1;
 
-            $stmtLog = $pdo->prepare($sqlLog);
+                if ($novasTentativas >= TENTATIVAS_MAXIMAS) {
 
-            $stmtLog->execute();
+                    $bloqueadoAte = date("Y-m-d H:i:s", strtotime("+" . MINUTOS_BLOQUEIO . " minutes"));
 
-            $mensagem = "Usuário ou senha incorretos.";
+                    $stmtBloqueio = $pdo->prepare(
+                        "UPDATE tb_usuario SET tentativas_login = 0, bloqueado_ate = :bloqueado WHERE id_usuario = :id"
+                    );
+                    $stmtBloqueio->execute([
+                        ":bloqueado" => $bloqueadoAte,
+                        ":id" => $usuario["id_usuario"]
+                    ]);
+
+                    $mensagem = "Você errou a senha " . TENTATIVAS_MAXIMAS . " vezes seguidas. "
+                              . "Sua conta foi bloqueada por " . MINUTOS_BLOQUEIO . " minutos.";
+
+                    $acaoLog = "LOGIN_BLOQUEIO";
+                    $descricaoLog = "Conta bloqueada após " . TENTATIVAS_MAXIMAS . " tentativas incorretas seguidas";
+
+                } else {
+
+                    $stmtTentativa = $pdo->prepare(
+                        "UPDATE tb_usuario SET tentativas_login = :tentativas WHERE id_usuario = :id"
+                    );
+                    $stmtTentativa->execute([
+                        ":tentativas" => $novasTentativas,
+                        ":id" => $usuario["id_usuario"]
+                    ]);
+
+                    $restantes = TENTATIVAS_MAXIMAS - $novasTentativas;
+                    $mensagem = "Usuário ou senha incorretos. Mais {$restantes} tentativa(s) "
+                              . "antes do bloqueio temporário.";
+
+                    $acaoLog = "LOGIN_FALHA";
+                    $descricaoLog = "Tentativa de login com senha incorreta";
+                }
+
+                $sqlLog = "INSERT INTO tb_log (
+                                usuario_log, acao_log, descricao_log, data_log, hora_log
+                           ) VALUES (
+                                :usuario, :acao, :descricao, CURDATE(), CURTIME()
+                           )";
+                $stmtLog = $pdo->prepare($sqlLog);
+                $stmtLog->execute([
+                    ":usuario" => $usuario["id_usuario"],
+                    ":acao" => $acaoLog,
+                    ":descricao" => $descricaoLog
+                ]);
+
+            } else {
+
+                $mensagem = "Usuário ou senha incorretos.";
+
+                $sqlLog = "INSERT INTO tb_log (
+                                usuario_log, acao_log, descricao_log, data_log, hora_log
+                           ) VALUES (
+                                NULL, 'LOGIN_FALHA', 'Tentativa de login com usuário inexistente', CURDATE(), CURTIME()
+                           )";
+                $stmtLog = $pdo->prepare($sqlLog);
+                $stmtLog->execute();
+            }
+
             $tipo_mensagem = "erro";
         }
     }
@@ -229,10 +312,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
                     <p class="link-troca">
-                        Não tem cadastro?
-                        <a href="cadastro.php">
-                            Cadastre-se aqui
-                        </a>
+                        Não tem uma conta? Peça a um administrador para cadastrar você.
                     </p>
 
                 </section>
