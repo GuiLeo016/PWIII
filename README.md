@@ -1,19 +1,11 @@
-#CRUD Mundo
-## Sobre o projeto
-O projeto consiste em uma aplicação focada no gerenciamento de dados geográficos como continentes, países, estados ,cidades, seus respectivos governantes e informações.
-## Funcionalidades
-- Cadastramento de continentes, países, estados ,cidades, seus respectivos governantes e informações.
-- Edição de continentes, países, estados ,cidades, seus respectivos governantes e informações.
-- Exclusão de continentes, países, estados ,cidades, seus respectivos governantes e informações.
-- Visualização de continentes, países, estados ,cidades, seus respectivos governantes e informações.
-- Cadastro e autenticação de usuário.
-- Manutenção de senha do usuário.
+# PWIII
+## Programação WEB 3
+Repositório destinado a projetos do terceiro ano do componente Programação WEB no curso de Desenvolvimento de Sistemas na ETEC Profª Ilza Nascimento Pintus
 ## Tecnologias utilizadas
 - HTML
 - CSS
 - PHP
+- JavaScript
 - MySQL
-## Como executar
-Instruções básicas necessárias para executar o projeto.
 ## Autor
 Guilherme Leonardo dos Santos
