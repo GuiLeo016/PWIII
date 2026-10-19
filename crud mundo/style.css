@@ -589,7 +589,7 @@ body {
 
     border-top: none;
 
-    font-size: 3vh;
+    font-size: 1.8vh;
 
     font-weight: bold;
 }
@@ -879,4 +879,12 @@ body {
     text-align: center;
 
     font-size: 1.8vh;
+}
+
+#mapa {
+    justify-self: center;
+    width: 70vh;
+    height: 70vh;
+    border-radius: 5vh;
+    margin-top: 5vh;
 }

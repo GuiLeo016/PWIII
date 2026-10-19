@@ -380,6 +380,12 @@ if ($cidade_id !== null && $pais_id !== null) {
                 </a>
             </li>
 
+            <li>
+                <a href="mapa.php">
+                    Mapa
+                </a>
+            </li>
+
         </ul>
 
     </header>
