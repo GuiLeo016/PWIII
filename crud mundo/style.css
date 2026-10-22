@@ -1,6 +1,52 @@
 /* =========================================================
-   CONFIGURAÇÕES GERAIS
+   CRUD MUNDO - FOLHA DE ESTILOS
+   Sumário:
+     1. Variáveis e base
+     2. Layout (main / container)
+     3. Cabeçalho e menu
+     4. Cartões (blocos padronizados)
+     5. Formulários e botões
+     6. Listas de seleção (home)
+     7. Informações dos registros
+     8. Mensagens
+     9. Mapa
+    10. Responsividade e acessibilidade
    ========================================================= */
+
+
+/* =========================================================
+   1. VARIÁVEIS E BASE
+   ========================================================= */
+
+:root {
+    --bg: rgb(56, 56, 56);
+    --superficie: #000;
+    --painel: rgb(30, 30, 30);
+    --campo: rgb(15, 15, 15);
+    --borda: rgb(80, 80, 80);
+
+    --texto: #fff;
+    --texto-suave: #aaa;
+    --destaque: #fff;
+
+    --erro-fundo: rgb(80, 20, 20);
+    --erro-borda: rgb(180, 60, 60);
+    --ok-fundo: rgb(20, 70, 20);
+    --ok-borda: rgb(70, 180, 70);
+
+    --raio: 1rem;
+    --raio-pequeno: 0.5rem;
+
+    --largura: 1000px;
+
+    --brilho:
+        0 0 1rem rgb(255, 255, 255),
+        0 0 2.5rem rgba(255, 255, 255, 0.82),
+        0 0 5rem rgba(255, 255, 255, 0.56);
+    --brilho-suave: 0 0 1rem rgba(255, 255, 255, 0.12);
+
+    --transicao: 0.25s ease;
+}
 
 *,
 *::before,
@@ -10,19 +56,30 @@
     box-sizing: border-box;
 }
 
+html {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
 body {
-    background-color: rgb(56, 56, 56);
-    color: #FFF;
+    background-color: var(--bg);
+    color: var(--texto);
     font-family: Georgia, 'Times New Roman', Times, serif;
+    line-height: 1.5;
     min-height: 100vh;
-    /* Faz o navegador renderizar controles nativos (select, scrollbar, etc.)
-       já no tema escuro, evitando dropdowns brancos/ilegíveis */
+
+    /* controles nativos (select, calendário, scrollbar) no tema escuro */
     color-scheme: dark;
+}
+
+:focus-visible {
+    outline: 2px solid var(--destaque);
+    outline-offset: 3px;
 }
 
 
 /* =========================================================
-   CONTAINER PRINCIPAL
+   2. LAYOUT (MAIN / CONTAINER)
    ========================================================= */
 
 #main {
@@ -30,12 +87,19 @@ body {
 
     display: flex;
     flex-direction: column;
-
     align-items: center;
 
-    gap: 3ch;
+    gap: clamp(1rem, 3vw, 2rem);
 
-    padding: 0;
+    padding-bottom: clamp(1.5rem, 5vw, 3rem);
+}
+
+/* Páginas sem menu (login / troca obrigatória de senha):
+   conteúdo centralizado também na vertical */
+#main.auth {
+    justify-content: center;
+
+    padding: clamp(1rem, 4vw, 2rem);
 }
 
 #container {
@@ -43,285 +107,352 @@ body {
     flex-direction: column;
     align-items: center;
 
-    background-color: #000;
+    gap: 1.25rem;
 
-    border-radius: 2ch;
+    width: min(calc(100% - 2rem), var(--largura));
 
-    padding: 5ch 4ch;
+    background-color: var(--superficie);
 
-    width: 100%;
-    max-width: 900px;
+    border: 3px solid #fff;
+    border-radius: 2rem;
 
-    min-height: 70vh;
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 3vw, 2.5rem);
 
-    border: #FFF solid 3px;
-
-    box-shadow:
-        0 0 2ch rgb(255, 255, 255),
-        0 0 5ch rgba(255, 255, 255, 0.822),
-        0 0 10ch rgba(255, 255, 255, 0.562);
+    box-shadow: var(--brilho);
 }
 
-
-/* =========================================================
-   TÍTULO
-   ========================================================= */
+#main.auth #container {
+    width: min(calc(100% - 2rem), 34rem);
+}
 
 #container h1 {
-    font-size: 4vh;
-    margin-bottom: 1ch;
+    font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.25rem);
+    line-height: 1.2;
 
     text-transform: uppercase;
-
     letter-spacing: 2px;
-
     text-align: center;
 }
 
-#container p {
-    color: #aaa;
+#container > p {
+    max-width: 60ch;
 
-    margin-bottom: 3ch;
+    color: var(--texto-suave);
 
-    font-size: 2vh;
-
+    font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
     text-align: center;
 }
 
 
 /* =========================================================
-   ÁREA DO LOGIN
+   3. CABEÇALHO E MENU
    ========================================================= */
 
-.cascata-container {
-    display: flex;
+#header {
+    width: 100%;
 
+    background-color: #000;
+
+    border: 3px solid #fff;
+    border-top: none;
+    border-radius: 0 0 2rem 2rem;
+
+    padding: 0.9rem clamp(1rem, 4vw, 3rem);
+
+    box-shadow: var(--brilho);
+}
+
+#header nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#header ul {
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
 
-    width: 100%;
+    gap: 0.4rem 0.5rem;
 
-    margin-top: 20px;
+    list-style: none;
 }
 
-
-/* =========================================================
-   CAIXA DO LOGIN
-   ========================================================= */
-
-.coluna-lista {
-    width: 100%;
-    max-width: 400px;
-
-    background-color: rgb(30, 30, 30);
-
-    border: 2px solid #fff;
-
-    border-radius: 1.5ch;
-
-    padding: 3ch;
-
-    box-shadow:
-        0 0 15px rgba(255, 255, 255, 0.1);
-}
-
-
-/* =========================================================
-   TÍTULO DA CAIXA
-   ========================================================= */
-
-.coluna-lista h2 {
-    font-size: 2.8vh;
-
-    margin-bottom: 2ch;
-
-    border-bottom: 1px solid #fff;
-
-    padding-bottom: 1ch;
-
-    text-align: center;
-
-    text-transform: uppercase;
-}
-
-
-/* =========================================================
-   FORMULÁRIO
-   ========================================================= */
-
-.coluna-lista form {
+#header ul li a {
     display: block;
 
-    width: 100%;
-}
-
-.coluna-lista form ul {
-    list-style: none;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 1.5ch;
-
-    width: 100%;
-}
-
-
-/* =========================================================
-   CAMPOS DO FORMULÁRIO
-   ========================================================= */
-
-.coluna-lista form ul li {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 0.7ch;
-
-    width: 100%;
-}
-
-
-/* =========================================================
-   LABELS
-   ========================================================= */
-
-.coluna-lista label {
-    font-weight: bold;
-
-    font-size: 2vh;
+    padding: 0.5rem 0.9rem;
 
     color: #fff;
+
+    font-weight: bold;
+    font-size: clamp(0.9rem, 0.85rem + 0.3vw, 1.05rem);
+    text-decoration: none;
+
+    border: 1px solid transparent;
+    border-radius: 0.6rem;
+
+    transition:
+        background-color var(--transicao),
+        color var(--transicao),
+        border-color var(--transicao),
+        text-shadow var(--transicao);
 }
 
+#header ul li a:hover {
+    border-color: rgba(255, 255, 255, 0.45);
 
-/* =========================================================
-   INPUTS
-   ========================================================= */
+    text-shadow: 0 0 10px #fff;
+}
 
-.coluna-lista input[type="text"],
-.coluna-lista input[type="password"] {
+#header ul li a.ativo {
+    background-color: #fff;
+    color: #000;
+
+    text-shadow: none;
+}
+
+#header ul li a.sair:hover {
+    background-color: var(--erro-fundo);
+    border-color: var(--erro-borda);
+}
+
+/* Botão do menu (só aparece no celular/tablet) */
+.menu-toggle {
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
     width: 100%;
 
-    padding: 1.2ch;
+    padding: 0.6rem 1rem;
 
-    border-radius: 0.7ch;
-
-    border: 1px solid rgb(80, 80, 80);
-
-    background-color: rgb(15, 15, 15);
-
+    background: transparent;
     color: #fff;
 
     font-family: inherit;
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 
-    font-size: 1.9vh;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 0.6rem;
 
-    transition: 0.3s;
+    cursor: pointer;
+
+    transition: background-color var(--transicao);
+}
+
+.menu-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 
 /* =========================================================
-   INPUT EM FOCO
+   4. CARTÕES (BLOCOS PADRONIZADOS)
    ========================================================= */
 
-.coluna-lista input[type="text"]:focus,
-.coluna-lista input[type="password"]:focus {
+.coluna-lista,
+.form-container,
+.info-container,
+.boas-vindas,
+.mapa-container {
+    width: 100%;
+
+    background-color: var(--painel);
+
+    border: 2px solid #fff;
+    border-radius: var(--raio);
+
+    padding: clamp(1.25rem, 3vw, 2rem);
+
+    box-shadow: var(--brilho-suave);
+}
+
+.coluna-lista h2,
+.info-container h2,
+.mapa-container h2,
+.boas-vindas h2 {
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.6rem;
+
+    border-bottom: 1px solid #fff;
+
+    font-size: clamp(1.15rem, 1rem + 0.8vw, 1.5rem);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.form-container {
+    max-width: 42rem;
+}
+
+.boas-vindas {
+    max-width: 44rem;
+
+    text-align: center;
+}
+
+.boas-vindas p {
+    color: var(--texto-suave);
+}
+
+
+/* =========================================================
+   5. FORMULÁRIOS E BOTÕES
+   ========================================================= */
+
+/* Formulários de cadastro: grade que vira 1 coluna em telas pequenas */
+.form-container form {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+
+    gap: 1.1rem 1.25rem;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.4rem;
+
+    min-width: 0;
+}
+
+.campo-largo,
+.form-container form > .btn-salvar,
+.form-container form > .dica {
+    grid-column: 1 / -1;
+}
+
+#container label {
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+/* Campos de todos os formulários (cadastros, login, troca de senha) */
+#container input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]),
+#container select {
+    width: 100%;
+
+    padding: 0.7rem 0.85rem;
+
+    background-color: var(--campo);
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 1rem;
+
+    border: 1px solid var(--borda);
+    border-radius: var(--raio-pequeno);
+
+    transition:
+        border-color var(--transicao),
+        box-shadow var(--transicao);
+}
+
+#container select {
+    cursor: pointer;
+}
+
+#container input:not([type="submit"]):focus,
+#container select:focus {
     outline: none;
 
     border-color: #fff;
 
     box-shadow:
-        0 0 5px #fff,
+        0 0 0 2px rgba(255, 255, 255, 0.3),
         0 0 10px rgba(255, 255, 255, 0.3);
 }
 
+.dica,
+.idade-preview {
+    color: var(--texto-suave);
 
-/* =========================================================
-   BOTÃO DE LOGIN
-   ========================================================= */
+    font-size: 0.9rem;
+}
 
-#btn-logar {
+.idade-preview {
+    font-style: italic;
+}
+
+/* Botão padrão (salvar / entrar / cadastrar) */
+.btn-salvar {
+    display: block;
+
     width: 100%;
 
-    margin-top: 1ch;
-
-    padding: 1.5ch;
+    margin-top: 0.5rem;
+    padding: 0.9rem 1rem;
 
     background-color: #fff;
-
     color: #000;
 
-    font-weight: bold;
-
     font-family: inherit;
-
-    font-size: 1.9vh;
-
+    font-weight: bold;
+    font-size: 1rem;
     text-transform: uppercase;
+    letter-spacing: 1px;
 
     border: none;
-
-    border-radius: 1ch;
+    border-radius: 0.75rem;
 
     cursor: pointer;
 
-    transition: all 0.3s ease;
+    transition:
+        box-shadow var(--transicao),
+        transform var(--transicao);
 }
 
-
-/* =========================================================
-   HOVER DO BOTÃO
-   ========================================================= */
-
-#btn-logar:hover {
-    background-color: #fff;
-
-    color: #000;
-
-    box-shadow:
-        0 0 10px #fff,
-        0 0 20px rgba(255, 255, 255, 0.5);
+.btn-salvar:hover {
+    box-shadow: 0 0 15px #fff;
 
     transform: scale(1.02);
 }
 
+.btn-salvar:active {
+    box-shadow: 0 0 5px #fff;
 
-/* =========================================================
-   BOTÃO AO CLICAR
-   ========================================================= */
-
-#btn-logar:active {
     transform: scale(0.98);
-
-    box-shadow:
-        0 0 5px #fff;
 }
 
+/* Formulários em lista (login / troca de senha) */
+.coluna-lista form ul {
+    display: flex;
+    flex-direction: column;
 
-/* =========================================================
-   LINK DE TROCA (LOGIN / CADASTRO)
-   ========================================================= */
+    gap: 1.1rem;
+
+    list-style: none;
+}
+
+.coluna-lista form ul li {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.4rem;
+}
 
 .link-troca {
-    margin-top: 2ch;
+    margin-top: 1.25rem;
 
+    color: var(--texto-suave);
+
+    font-size: 0.95rem;
     text-align: center;
-
-    font-size: 1.8vh;
-
-    color: #aaa;
 }
 
 .link-troca a {
     color: #fff;
 
     font-weight: bold;
-
     text-decoration: underline;
-
-    transition: 0.3s;
 }
 
 .link-troca a:hover {
@@ -330,561 +461,294 @@ body {
 
 
 /* =========================================================
-   MENSAGENS
+   6. LISTAS DE SELEÇÃO (HOME)
    ========================================================= */
 
-.mensagem {
-    text-align: center;
+/* Colunas lado a lado, centralizadas, quebrando conforme a largura */
+.cascata-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
 
-    margin-bottom: 2ch;
-
-    padding: 1.2ch;
-
-    border-radius: 0.8ch;
-
-    font-weight: bold;
-
-    font-size: 1.8vh;
-
-    /* Estilo padrão para quando nenhum modificador (.erro / .sucesso)
-       é aplicado — antes ficava sem cor de fundo/borda e "sumia" na tela */
-    color: #fff;
-    background-color: rgb(45, 45, 45);
-    border: 1px solid rgb(120, 120, 120);
-}
-
-
-/* =========================================================
-   MENSAGEM DE ERRO
-   ========================================================= */
-
-.mensagem.erro {
-    color: #fff;
-
-    background-color: rgb(80, 20, 20);
-
-    border: 1px solid rgb(180, 60, 60);
-
-    box-shadow:
-        0 0 8px rgba(255, 80, 80, 0.25);
-}
-
-
-/* =========================================================
-   MENSAGEM DE SUCESSO
-   ========================================================= */
-
-.mensagem.sucesso {
-    color: #fff;
-
-    background-color: rgb(20, 70, 20);
-
-    border: 1px solid rgb(70, 180, 70);
-
-    box-shadow:
-        0 0 8px rgba(80, 255, 80, 0.25);
-}
-
-
-/* =========================================================
-   CONTAINER DE FORMULÁRIOS
-   ========================================================= */
-
-.form-container {
-    background-color: rgb(30, 30, 30);
-
-    padding: 3ch;
-
-    border-radius: 1.5ch;
-
-    border: 1px solid #fff;
-
-    box-shadow:
-        0 0 10px rgba(255, 255, 255, 0.2);
+    gap: 1.25rem;
 
     width: 100%;
-
-    max-width: 500px;
-
-    margin: 0 auto;
 }
 
-.form-container form {
-    display: flex;
+.cascata-container > .coluna-lista {
+    flex: 1 1 17rem;
 
+    width: auto;
+    max-width: 24rem;
+}
+
+/* Cartão único e centralizado (login / troca de senha) */
+.cascata-unico {
+    max-width: 28rem;
+
+    margin-inline: auto;
+}
+
+.cascata-unico > .coluna-lista {
+    flex-basis: 100%;
+
+    max-width: none;
+}
+
+.coluna-lista > ul {
+    display: flex;
     flex-direction: column;
 
-    gap: 1.5ch;
-}
+    gap: 0.6rem;
 
-.form-container label {
-    font-weight: bold;
+    max-height: 24rem;
+    overflow-y: auto;
 
-    font-size: 2vh;
-}
-
-.form-container input,
-.form-container select {
-    width: 100%;
-
-    padding: 1ch;
-
-    border-radius: 0.5ch;
-
-    border: 1px solid rgb(80, 80, 80);
-
-    background-color: rgb(15, 15, 15);
-
-    color: #fff;
-
-    font-family: inherit;
-
-    font-size: 1.9vh;
-
-    transition: 0.3s;
-}
-
-.form-container select {
-    cursor: pointer;
-}
-
-.idade-preview {
-    margin-top: -0.8ch;
-
-    color: #aaa;
-
-    font-size: 1.6vh;
-
-    font-style: italic;
-}
-
-.form-container input:focus,
-.form-container select:focus {
-    outline: none;
-
-    border-color: #fff;
-
-    box-shadow:
-        0 0 5px #fff;
-}
-
-
-/* =========================================================
-   BOTÕES GERAIS
-   ========================================================= */
-
-.btn-salvar {
-    width: 100%;
-
-    margin-top: 2ch;
-
-    padding: 1.5ch;
-
-    background-color: #fff;
-
-    color: #000;
-
-    font-weight: bold;
-
-    font-size: 1.9vh;
-
-    text-transform: uppercase;
-
-    font-family: inherit;
-
-    border: none;
-
-    border-radius: 1ch;
-
-    cursor: pointer;
-
-    transition: 0.3s;
-}
-
-.btn-salvar:hover {
-    box-shadow:
-        0 0 15px #fff;
-
-    transform: scale(1.02);
-}
-
-.btn-salvar:active {
-    transform: scale(0.98);
-
-    box-shadow:
-        0 0 5px #fff;
-}
-
-
-/* =========================================================
-   LINKS
-   ========================================================= */
-
-.coluna-lista ul li a {
-    display: block;
-
-    color: #fff;
-
-    text-decoration: none;
-
-    background-color: rgb(15, 15, 15);
-
-    padding: 1.5ch 2ch;
-
-    border: 1px solid rgb(80, 80, 80);
-
-    border-radius: 1ch;
-
-    font-size: 2vh;
-
-    transition: all 0.3s ease;
-}
-
-.coluna-lista ul li a:hover {
-    background-color: #fff;
-
-    color: #000;
-
-    font-weight: bold;
-
-    box-shadow:
-        0 0 10px rgba(255, 255, 255, 0.5);
-
-    transform: scale(1.02);
-}
-
-.coluna-lista ul li a.ativo {
-    background-color: #fff;
-
-    color: #000;
-
-    font-weight: bold;
-
-    border-color: #fff;
-
-    box-shadow:
-        0 0 15px rgb(255, 255, 255);
-}
-
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
-#header {
-    width: 100%;
-
-    background-color: rgb(0, 0, 0);
-
-    padding: 2.5vh 5vw;
-
-    border-radius: 0 0 2ch 2ch;
-
-    box-shadow:
-        0 0 2ch rgb(255, 255, 255),
-        0 0 5ch rgba(255, 255, 255, 0.705),
-        0 0 7ch rgba(255, 255, 255, 0.562);
-
-    border: #FFF solid 3px;
-
-    border-top: none;
-
-    font-size: 1.8vh;
-
-    font-weight: bold;
-}
-
-#header ul {
-    display: flex;
-
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    justify-content: center;
-    align-items: center;
-
-    gap: 1.5ch 4vw;
+    padding-right: 0.25rem;
 
     list-style: none;
 }
 
-#header ul li a {
+.coluna-lista ul li a {
+    display: block;
+
+    padding: 0.85rem 1.1rem;
+
+    background-color: var(--campo);
+    color: #fff;
+
+    font-size: 1rem;
     text-decoration: none;
 
-    color: white;
+    border: 1px solid var(--borda);
+    border-radius: 0.75rem;
 
-    transition: 0.3s;
+    transition:
+        background-color var(--transicao),
+        color var(--transicao),
+        box-shadow var(--transicao),
+        transform var(--transicao);
 }
 
-#header ul li a:hover {
-    text-shadow:
-        0 0 10px #fff;
+.coluna-lista ul li a:hover {
+    background-color: #fff;
+    color: #000;
+
+    font-weight: bold;
+
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+
+    transform: scale(1.02);
 }
 
+.coluna-lista ul li a.ativo,
+.coluna-lista ul li a.ativo:hover {
+    background-color: #fff;
+    color: #000;
 
-/* =========================================================
-   RESPONSIVIDADE - TABLETS
-   ========================================================= */
+    font-weight: bold;
 
-@media (max-width: 768px) {
+    border-color: #fff;
 
-    #main {
-        padding: 2vh 2vw;
-
-        gap: 2ch;
-    }
-
-    #container {
-        margin: 2vh 0;
-
-        padding: 4ch 2ch;
-
-        min-height: 90vh;
-    }
-
-    #container h1 {
-        font-size: 3vh;
-    }
-
-    #container p {
-        font-size: 1.8vh;
-    }
-
-    .cascata-container {
-        flex-direction: column;
-    }
-
-    .coluna-lista {
-        max-width: 500px;
-
-        padding: 2.5ch;
-    }
-
-    .info-container {
-        padding: 2ch;
-    }
-
-    .info-grid {
-        grid-template-columns: 1fr;
-    }
+    box-shadow: 0 0 15px rgb(255, 255, 255);
 }
 
+.sem-registros {
+    display: block;
 
-/* =========================================================
-   RESPONSIVIDADE - CELULARES
-   ========================================================= */
+    padding: 0.9rem;
 
-@media (max-width: 480px) {
+    color: var(--texto-suave);
 
-    #main {
-        padding: 1vh 2vw;
-
-        gap: 1.5ch;
-    }
-
-    #container {
-        border-radius: 1.5ch;
-
-        padding: 3ch 1.5ch;
-
-        border-width: 2px;
-    }
-
-    #container h1 {
-        font-size: 2.7vh;
-
-        letter-spacing: 1px;
-    }
-
-    #container p {
-        font-size: 1.7vh;
-
-        margin-bottom: 2ch;
-    }
-
-    .cascata-container {
-        margin-top: 10px;
-    }
-
-    .coluna-lista {
-        padding: 2ch;
-
-        border-radius: 1ch;
-    }
-
-    .coluna-lista h2 {
-        font-size: 2.4vh;
-    }
-
-    .coluna-lista label {
-        font-size: 1.8vh;
-    }
-
-    .coluna-lista input[type="text"],
-    .coluna-lista input[type="password"] {
-        font-size: 1.8vh;
-
-        padding: 1.1ch;
-    }
-
-    #btn-logar {
-        font-size: 1.8vh;
-
-        padding: 1.3ch;
-    }
-}
-
-/* =========================================================
-   INFORMAÇÕES DOS REGISTROS
-   ========================================================= */
-
-.info-container {
-    width: 100%;
-    max-width: 1100px;
-
-    margin-top: 4ch;
-    padding: 3ch;
-
-    background-color: rgb(30, 30, 30);
-
-    border: 2px solid #fff;
-    border-radius: 1.5ch;
-
-    box-shadow:
-        0 0 15px rgba(255, 255, 255, 0.1);
-}
-
-.info-container h2 {
+    font-size: 0.95rem;
     text-align: center;
-
-    font-size: 2.8vh;
-
-    margin-bottom: 2ch;
-
-    padding-bottom: 1ch;
-
-    border-bottom: 1px solid #fff;
 }
+
+
+/* =========================================================
+   7. INFORMAÇÕES DOS REGISTROS
+   ========================================================= */
 
 .info-grid {
     display: grid;
 
-    grid-template-columns:
-        repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12.5rem), 1fr));
 
-    gap: 1.5ch;
+    gap: 0.9rem;
 
     width: 100%;
 }
 
 .info-item {
     display: flex;
-
     flex-direction: column;
 
-    gap: 0.7ch;
+    gap: 0.35rem;
 
-    padding: 1.5ch;
+    min-width: 0;
 
-    background-color: rgb(15, 15, 15);
+    padding: 0.9rem 1rem;
 
-    border: 1px solid rgb(80, 80, 80);
+    background-color: var(--campo);
 
-    border-radius: 1ch;
+    border: 1px solid var(--borda);
+    border-radius: 0.75rem;
 }
 
 .info-item strong {
-    color: #aaa;
+    color: var(--texto-suave);
 
-    font-size: 1.7vh;
-
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
 }
 
 .info-item span {
-    color: #fff;
+    font-size: 1rem;
 
-    font-size: 1.9vh;
+    overflow-wrap: anywhere;
 }
 
-
-/* =========================================================
-   GOVERNANTE
-   ========================================================= */
-
 .governante-container {
-    margin-top: 3ch;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
 
-    padding-top: 2ch;
-
-    border-top: 1px solid rgb(80, 80, 80);
+    border-top: 1px solid var(--borda);
 }
 
 .governante-container h3 {
-    font-size: 2.2vh;
+    margin-bottom: 1rem;
 
-    margin-bottom: 1.5ch;
-
+    font-size: 1.2rem;
     text-align: center;
 }
 
 
 /* =========================================================
-   MENSAGEM DE BOAS-VINDAS
+   8. MENSAGENS
    ========================================================= */
 
-.boas-vindas {
+.mensagem {
     width: 100%;
-    max-width: 700px;
+    max-width: 42rem;
 
-    margin-top: 4ch;
+    padding: 0.85rem 1rem;
 
-    padding: 3ch;
+    background-color: rgb(45, 45, 45);
+    color: #fff;
 
+    font-weight: bold;
+    font-size: 0.95rem;
     text-align: center;
 
-    background-color: rgb(30, 30, 30);
-
-    border: 1px solid #fff;
-
-    border-radius: 1.5ch;
+    border: 1px solid rgb(120, 120, 120);
+    border-radius: 0.6rem;
 }
 
-.boas-vindas h2 {
-    font-size: 2.8vh;
-
-    margin-bottom: 1.5ch;
+.coluna-lista .mensagem {
+    margin: 0 auto 1.25rem;
 }
 
-.boas-vindas p {
-    margin: 0;
+.mensagem.erro {
+    background-color: var(--erro-fundo);
 
-    color: #aaa;
+    border-color: var(--erro-borda);
 
-    font-size: 1.9vh;
+    box-shadow: 0 0 8px rgba(255, 80, 80, 0.25);
+}
+
+.mensagem.sucesso {
+    background-color: var(--ok-fundo);
+
+    border-color: var(--ok-borda);
+
+    box-shadow: 0 0 8px rgba(80, 255, 80, 0.25);
 }
 
 
 /* =========================================================
-   SEM REGISTROS
+   9. MAPA
    ========================================================= */
 
-.sem-registros {
-    display: block;
-
-    padding: 1.5ch;
-
-    color: #aaa;
-
-    text-align: center;
-
-    font-size: 1.8vh;
+.mapa-container .info-grid {
+    margin-bottom: 1.25rem;
 }
 
 #mapa {
-    justify-self: center;
-    width: 70vh;
-    height: 70vh;
-    border-radius: 5vh;
-    margin-top: 5vh;
+    width: 100%;
+    height: clamp(300px, 55vh, 560px);
+
+    background-color: var(--campo);
+
+    border: 1px solid var(--borda);
+    border-radius: 0.75rem;
+}
+
+
+/* =========================================================
+   10. RESPONSIVIDADE E ACESSIBILIDADE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    #header {
+        border-radius: 0 0 1.25rem 1.25rem;
+    }
+
+    .menu-toggle {
+        display: inline-flex;
+    }
+
+    #header ul {
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+
+        width: 100%;
+
+        margin-top: 0.75rem;
+    }
+
+    #header ul.aberto {
+        display: flex;
+    }
+
+    #header ul li a {
+        text-align: center;
+    }
+
+    #container {
+        border-radius: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    #container {
+        border-width: 2px;
+        border-radius: 1.25rem;
+
+        gap: 1rem;
+    }
+
+    #container h1 {
+        letter-spacing: 1px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .btn-salvar:hover,
+    .btn-salvar:active,
+    .coluna-lista ul li a:hover {
+        transform: none;
+    }
 }

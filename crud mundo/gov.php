@@ -44,47 +44,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Governantes - CRUD Mundo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="main">
-        <div id="header">
-            <ul>
-                <li><a href="home.php">Início</a></li>
-                <li><a href="continentes.php">Continentes</a></li>
-                <li><a href="paises.php">Países</a></li>
-                <li><a href="cidades.php">Cidades</a></li>
-                <li><a href="gov.php">Governantes</a></li>
-            </ul>
-        </div>
-        
-        <div id="container" style="height: auto; padding-bottom: 5ch;">
+
+        <?php include 'header.php'; ?>
+
+        <main id="container">
+
             <h1>Cadastrar Governante</h1>
-            <?php if($mensagem) echo "<p class='mensagem'>$mensagem</p>"; ?>
-            
-            <div class="form-container">
+            <p>Preencha os dados para cadastrar um novo governante.</p>
+
+            <?php if ($mensagem): ?>
+                <div class="mensagem <?= stripos($mensagem, 'sucesso') !== false ? 'sucesso' : 'erro' ?>" role="status">
+                    <?= htmlspecialchars($mensagem) ?>
+                </div>
+            <?php endif; ?>
+
+            <section class="form-container">
                 <form action="gov.php" method="POST">
-                    <label>Nome do Governante:</label>
-                    <input type="text" name="nome_governante" required>
-                    
-                    <label>Partido Político:</label>
-                    <input type="text" name="partido_politico" required>
-                    
-                    <label>Data de Nascimento:</label>
-                    <input type="date" name="data_nascimento" id="data_nascimento" required onchange="atualizarIdadePreview()">
-                    <p id="idade-preview" class="idade-preview"></p>
-                    
-                    <label>Início do Mandato:</label>
-                    <input type="date" name="data_inicio_mandato" required>
-                    
-                    <label>Final do Mandato:</label>
-                    <input type="date" name="data_final_mandato" required>
-                    
+
+                    <div class="campo campo-largo">
+                        <label for="nome_governante">Nome do Governante</label>
+                        <input type="text" name="nome_governante" id="nome_governante"  required>
+                    </div>
+                    <div class="campo campo-largo">
+                        <label for="partido_politico">Partido Político</label>
+                        <input type="text" name="partido_politico" id="partido_politico"  required>
+                    </div>
+                    <div class="campo">
+                        <label for="data_nascimento">Data de Nascimento</label>
+                        <input type="date" name="data_nascimento" id="data_nascimento" required onchange="atualizarIdadePreview()">
+                        <span id="idade-preview" class="idade-preview">A idade é calculada automaticamente.</span>
+                    </div>
+                    <div class="campo">
+                        <label for="data_inicio_mandato">Início do Mandato</label>
+                        <input type="date" name="data_inicio_mandato" id="data_inicio_mandato"  required>
+                    </div>
+                    <div class="campo">
+                        <label for="data_final_mandato">Final do Mandato</label>
+                        <input type="date" name="data_final_mandato" id="data_final_mandato"  required>
+                    </div>
+
                     <button type="submit" class="btn-salvar">Salvar</button>
+
                 </form>
-            </div>
-        </div>
+            </section>
+
+        </main>
+
     </div>
 
     <script>
@@ -93,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             const preview = document.getElementById('idade-preview');
 
             if (!dataNascimento) {
-                preview.textContent = '';
+                preview.textContent = 'A idade é calculada automaticamente.';
                 return;
             }
 

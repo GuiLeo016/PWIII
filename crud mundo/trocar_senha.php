@@ -118,7 +118,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <body>
 
-    <div id="main">
+    <div id="main"<?= $obrigatorio ? ' class="auth"' : '' ?>>
+
+        <?php if (!$obrigatorio) include 'header.php'; ?>
 
         <div id="container">
 
@@ -132,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <?php endif; ?>
             </p>
 
-            <div class="cascata-container">
+            <div class="cascata-container cascata-unico">
 
                 <section class="coluna-lista">
 
@@ -204,12 +206,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         </ul>
 
                     </form>
-
-                    <?php if (!$obrigatorio): ?>
-                        <p class="link-troca">
-                            <a href="home.php">Voltar ao início</a>
-                        </p>
-                    <?php endif; ?>
 
                 </section>
 

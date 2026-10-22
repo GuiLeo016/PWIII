@@ -30,42 +30,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Continentes - CRUD Mundo</title>
-    <link rel="stylesheet" href="style.css"> </head>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
     <div id="main">
-        <div id="header">
-            <ul>
-                <li><a href="home.php">Início</a></li>
-                <li><a href="continentes.php">Continentes</a></li>
-                <li><a href="paises.php">Países</a></li>
-                <li><a href="cidades.php">Cidades</a></li>
-                <li><a href="gov.php">Governantes</a></li>
-            </ul>
-        </div>
-        
-        <div id="container">
-            <h1>Continente</h1>
-            <?php if($mensagem) echo "<p class='mensagem'>$mensagem</p>"; ?>
-            
-            <div class="form-container">
+
+        <?php include 'header.php'; ?>
+
+        <main id="container">
+
+            <h1>Cadastrar Continente</h1>
+            <p>Preencha os dados para cadastrar um novo continente.</p>
+
+            <?php if ($mensagem): ?>
+                <div class="mensagem <?= stripos($mensagem, 'sucesso') !== false ? 'sucesso' : 'erro' ?>" role="status">
+                    <?= htmlspecialchars($mensagem) ?>
+                </div>
+            <?php endif; ?>
+
+            <section class="form-container">
                 <form action="continentes.php" method="POST">
-                    <label>Nome do Continente:</label>
-                    <input type="text" name="nome_continente" required>
-                    
-                    <label>População:</label>
-                    <input type="number" name="populacao_continente" min=1 required>
-                    
-                    <label>Área (km²):</label>
-                    <input type="number" step="0.01" name="area_continente" min=1 required>
-                    
-                    <label>Total de Países:</label>
-                    <input type="number" name="total_paises" min="1" required>
-                    
+
+                    <div class="campo campo-largo">
+                        <label for="nome_continente">Nome do Continente</label>
+                        <input type="text" name="nome_continente" id="nome_continente"  required>
+                    </div>
+                    <div class="campo">
+                        <label for="populacao_continente">População</label>
+                        <input type="number" name="populacao_continente" id="populacao_continente" min="1" required>
+                    </div>
+                    <div class="campo">
+                        <label for="area_continente">Área (km²)</label>
+                        <input type="number" name="area_continente" id="area_continente" step="0.01" min="1" required>
+                    </div>
+                    <div class="campo">
+                        <label for="total_paises">Total de Países</label>
+                        <input type="number" name="total_paises" id="total_paises" min="1" required>
+                    </div>
+
                     <button type="submit" class="btn-salvar">Salvar</button>
+
                 </form>
-            </div>
-        </div>
+            </section>
+
+        </main>
+
     </div>
 </body>
 </html>

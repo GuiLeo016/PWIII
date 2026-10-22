@@ -324,71 +324,7 @@ if ($cidade_id !== null && $pais_id !== null) {
          HEADER
          ===================================================== -->
 
-    <header id="header">
-
-        <ul>
-
-            <li>
-                <a href="home.php">
-                    Início
-                </a>
-            </li>
-
-            <?php if ($eh_admin): ?>
-
-                <li>
-                    <a href="continentes.php">
-                        Continentes
-                    </a>
-                </li>
-
-                <li>
-                    <a href="paises.php">
-                        Países
-                    </a>
-                </li>
-
-                <li>
-                    <a href="cidades.php">
-                        Cidades
-                    </a>
-                </li>
-
-                <li>
-                    <a href="gov.php">
-                        Governantes
-                    </a>
-                </li>
-
-                <li>
-                    <a href="cadastro.php">
-                        Cadastrar Usuário
-                    </a>
-                </li>
-
-            <?php endif; ?>
-
-            <li>
-                <a href="trocar_senha.php">
-                    Alterar Senha
-                </a>
-            </li>
-
-            <li>
-                <a href="logout.php">
-                    Sair
-                </a>
-            </li>
-
-            <li>
-                <a href="mapa.php">
-                    Mapa
-                </a>
-            </li>
-
-        </ul>
-
-    </header>
+    <?php include 'header.php'; ?>
 
 
     <!-- =====================================================

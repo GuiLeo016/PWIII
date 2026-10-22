@@ -101,49 +101,55 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Usuário - CRUD Mundo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="main">
-        <div id="header">
-            <ul>
-                <li><a href="home.php">Início</a></li>
-                <li><a href="continentes.php">Continentes</a></li>
-                <li><a href="paises.php">Países</a></li>
-                <li><a href="cidades.php">Cidades</a></li>
-                <li><a href="gov.php">Governantes</a></li>
-                <li><a href="cadastro.php">Cadastrar Usuário</a></li>
-                <li><a href="trocar_senha.php">Alterar Senha</a></li>
-                <li><a href="logout.php">Sair</a></li>
-            </ul>
-        </div>
 
-        <div id="container" style="height: auto; padding-bottom: 5ch;">
+        <?php include 'header.php'; ?>
+
+        <main id="container">
+
             <h1>Cadastrar Usuário</h1>
-            <?php if ($mensagem) echo "<p class='mensagem'>$mensagem</p>"; ?>
+            <p>Somente administradores podem criar novas contas.</p>
 
-            <div class="form-container">
+            <?php if ($mensagem): ?>
+                <div class="mensagem <?= stripos($mensagem, 'sucesso') !== false ? 'sucesso' : 'erro' ?>" role="status">
+                    <?= htmlspecialchars($mensagem) ?>
+                </div>
+            <?php endif; ?>
+
+            <section class="form-container">
                 <form action="cadastro.php" method="POST">
-                    <label>Nome de Usuário:</label>
-                    <input type="text" name="username" maxlength="30" required>
 
-                    <label>Tipo de Usuário:</label>
-                    <select name="tipo_usuario" required>
-                        <option value="U" selected>Usuário comum</option>
-                        <option value="A">Administrador</option>
-                    </select>
+                    <div class="campo campo-largo">
+                        <label for="username">Nome de Usuário</label>
+                        <input type="text" name="username" id="username" maxlength="30" required autocomplete="off">
+                    </div>
 
-                    <p style="color:#aaa; font-size:1.7vh; margin-top:-0.8ch;">
+                    <div class="campo campo-largo">
+                        <label for="tipo_usuario">Tipo de Usuário</label>
+                        <select name="tipo_usuario" id="tipo_usuario" required>
+                            <option value="U" selected>Usuário comum</option>
+                            <option value="A">Administrador</option>
+                        </select>
+                    </div>
+
+                    <p class="dica">
                         A senha inicial de todo usuário cadastrado é sempre
                         <strong>1234</strong>. Ele será obrigado a trocá-la
                         no primeiro login.
                     </p>
 
                     <button type="submit" class="btn-salvar">Cadastrar</button>
+
                 </form>
-            </div>
-        </div>
+            </section>
+
+        </main>
+
     </div>
 </body>
 </html>

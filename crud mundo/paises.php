@@ -35,68 +35,83 @@ $governantes = $pdo->query("SELECT id_governante, nome_governante FROM tb_govern
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastrar Países - CRUD Mundo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Países - CRUD Mundo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="main">
-        <div id="header">
-            <ul>
-                <li><a href="home.php">Início</a></li>
-                <li><a href="continentes.php">Continentes</a></li>
-                <li><a href="paises.php">Países</a></li>
-                <li><a href="cidades.php">Cidades</a></li>
-                <li><a href="gov.php">Governantes</a></li>
-            </ul>
-        </div>
-        
-        <div id="container" style="height: auto; padding-bottom: 5ch;">
-            <h1>País</h1>
-            <?php if($mensagem) echo "<p class='mensagem'>$mensagem</p>"; ?>
-            
-            <div class="form-container">
+
+        <?php include 'header.php'; ?>
+
+        <main id="container">
+
+            <h1>Cadastrar País</h1>
+            <p>Preencha os dados para cadastrar um novo país.</p>
+
+            <?php if ($mensagem): ?>
+                <div class="mensagem <?= stripos($mensagem, 'sucesso') !== false ? 'sucesso' : 'erro' ?>" role="status">
+                    <?= htmlspecialchars($mensagem) ?>
+                </div>
+            <?php endif; ?>
+
+            <section class="form-container">
                 <form action="paises.php" method="POST">
-                    <label>Nome do País:</label>
-                    <input type="text" name="nome_pais" required>
-                    
-                    <label>Continente:</label>
-                    <select name="continente_pais" required>
-                        <option value="">Selecione um Continente...</option>
-                        <?php foreach($continentes as $cont): ?>
-                            <option value="<?= $cont['id_continente'] ?>"><?= $cont['nome_continente'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
 
-                    <label>Governante:</label>
-                    <select name="governante_pais" required>
-                        <option value="">Selecione um Governante...</option>
-                        <?php foreach($governantes as $gov): ?>
-                            <option value="<?= $gov['id_governante'] ?>"><?= $gov['nome_governante'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <div class="campo campo-largo">
+                        <label for="nome_pais">Nome do País</label>
+                        <input type="text" name="nome_pais" id="nome_pais"  required>
+                    </div>
+                    <div class="campo">
+                        <label for="continente_pais">Continente</label>
+                        <select name="continente_pais" id="continente_pais" required>
+                            <option value="">Selecione um Continente...</option>
+                            <?php foreach ($continentes as $cont): ?>
+                                <option value="<?= $cont['id_continente'] ?>"><?= htmlspecialchars($cont['nome_continente']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label for="governante_pais">Governante</label>
+                        <select name="governante_pais" id="governante_pais" required>
+                            <option value="">Selecione um Governante...</option>
+                            <?php foreach ($governantes as $gov): ?>
+                                <option value="<?= $gov['id_governante'] ?>"><?= htmlspecialchars($gov['nome_governante']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label for="populacao_pais">População</label>
+                        <input type="number" name="populacao_pais" id="populacao_pais"  required>
+                    </div>
+                    <div class="campo">
+                        <label for="area_pais">Área (km²)</label>
+                        <input type="number" name="area_pais" id="area_pais" step="0.001" required>
+                    </div>
+                    <div class="campo">
+                        <label for="idioma">Idioma</label>
+                        <input type="text" name="idioma" id="idioma"  required>
+                    </div>
+                    <div class="campo">
+                        <label for="clima_pais">Clima</label>
+                        <input type="text" name="clima_pais" id="clima_pais"  required>
+                    </div>
+                    <div class="campo">
+                        <label for="regime_politico">Regime Político</label>
+                        <input type="text" name="regime_politico" id="regime_politico"  required>
+                    </div>
+                    <div class="campo">
+                        <label for="moeda">Moeda</label>
+                        <input type="text" name="moeda" id="moeda"  required>
+                    </div>
 
-                    <label>População:</label>
-                    <input type="number" name="populacao_pais" required>
-                    
-                    <label>Área (km²):</label>
-                    <input type="number" step="0.001" name="area_pais" required>
-                    
-                    <label>Idioma:</label>
-                    <input type="text" name="idioma" required>
-                    
-                    <label>Clima:</label>
-                    <input type="text" name="clima_pais" required>
-                    
-                    <label>Regime Político:</label>
-                    <input type="text" name="regime_politico" required>
-                    
-                    <label>Moeda:</label>
-                    <input type="text" name="moeda" required>
-                    
                     <button type="submit" class="btn-salvar">Salvar</button>
+
                 </form>
-            </div>
-        </div>
+            </section>
+
+        </main>
+
     </div>
 </body>
 </html>

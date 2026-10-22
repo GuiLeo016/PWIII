@@ -223,7 +223,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <body>
 
-    <div id="main">
+    <div id="main" class="auth">
 
         <div id="container">
 
@@ -233,7 +233,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 Faça login para acessar o sistema.
             </p>
 
-            <div class="cascata-container">
+            <div class="cascata-container cascata-unico">
 
                 <section class="coluna-lista">
 
